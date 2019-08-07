@@ -1,5 +1,6 @@
 #!/bin/bash
 # -*-Shell-script-*-
+#
 #/**
 # * Title    : remove tool for /home/_trash
 # * Auther   : Alex, Lee
@@ -7,7 +8,7 @@
 # * Modified : 2019-05-13
 # * E-mail   : cine0831@gmail.com
 #**/
-
+#
 #set -e
 #set -x
 
