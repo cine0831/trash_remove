@@ -2,7 +2,7 @@
 # -*-Shell-script-*-
 #
 #/**
-# * Title    : remove tool for /home/_trash
+# * Title    : remove tool for /_trash
 # * Auther   : Alex, Lee
 # * Created  : 2018-12-19 
 # * Modified : 2019-05-13
@@ -13,7 +13,7 @@
 #set -x
 
 pid=$$
-_trash_home="/usr/mgmt/trash_remove"
+_trash_home="/usr/local/trash_remove"
 _trash_conf="${_trash_home}/trash_remove.conf"
 _trash_log="${_trash_home}/logs"
 pidfile="${_trash_log}/trash_remove.pid"
@@ -28,9 +28,9 @@ else
 fi
 
 # define directory
-_workdir="/home/_trash"
+_workdir="/_trash"
 _workperm="700"
-_rmdir="/home/___rmdir"
+_rmdir="/_rmdir"
 
 
 function _pid_check() {
@@ -102,8 +102,8 @@ function _remove_trash() {
         fi
 
         # 쓰레기 파일 임시저장 디렉토리로 이동
-        find /home/_trash/ -type f -ctime +${day} -exec mv -fv {} ${_rmdir} \; >> ${_trash_log}/removed_files_${_date}.txt 2>&1
-        find /home/_trash/ -type d -ctime +${day} -exec rmdir -v {} \; >> ${_trash_log}/removed_directories_${_date}.txt 2>&1
+        find /_trash/ -type f -ctime +${day} -exec mv -fv {} ${_rmdir} \; >> ${_trash_log}/removed_files_${_date}.txt 2>&1
+        find /_trash/ -type d -ctime +${day} -exec rmdir -v {} \; >> ${_trash_log}/removed_directories_${_date}.txt 2>&1
 
         # 파일이름에 "공백"이 "a"으로 변경
         find ${_rmdir} -name "* *" -type f -exec bash -c 'mv -fv "$0" "${0// /_}"' {} \; >> ${_trash_log}/rename_files_${_date}.txt 2>&1
@@ -114,7 +114,7 @@ function _remove_trash() {
         # 파일이름 첫글자로 "공백"이면 "a"으로 변경
         find ${_rmdir} -name " *" -type f -exec bash -c 'mv -fv "$0" "${0// /a}"' {} \; >> ${_trash_log}/rename_files_${_date}.txt 2>&1
     else
-        # /home/_trash 디렉토리가 없으면 생성후 종료
+        # /_trash 디렉토리가 없으면 생성후 종료
         mkdir -pv ${_workdir}
         if [ $? -eq 1 ]; then
             chattr -V -i /home
@@ -127,7 +127,7 @@ function _remove_trash() {
         exit 1
     fi
 
-    # remove /home/___rmdir directory
+    # remove /_rmdir directory
     if [ -d "${_rmdir}" ]; then
         /bin/rmdir ${_rmdir}
         if [ $? -eq 1 ]; then
@@ -136,7 +136,7 @@ function _remove_trash() {
             # 디렉토리 전체로 삭제(I/O 부하로 인하여 사용하지 않음)
             #/bin/rm -rf ${_rmdir}
 
-            # I/O 부하를 줄이기 /home/___rmdir로 옮겨진 파일을 1000개 단위로 나누어 삭제
+            # I/O 부하를 줄이기 /_rmdir로 옮겨진 파일을 1000개 단위로 나누어 삭제
             _previous=$(/bin/pwd)
             cd ${_rmdir}
             remove_cnt=$(/bin/ls -f -I. -I.. ${_rmdir} | wc -l)
