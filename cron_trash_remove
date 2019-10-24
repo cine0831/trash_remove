@@ -1,2 +1,2 @@
-0 2 1 * * mv /usr/mgmt/trash_remove/logs /home/_trash/trash_remove_logs >/dev/null 2>&1
-00 03 * * * /usr/mgmt/trash_remove/trash_remove.sh >/dev/null 2>&1
+0 2 1 * * mv /usr/local/trash_remove/logs /_trash/trash_remove_logs >/dev/null 2>&1
+00 03 * * * /usr/local/trash_remove/trash_remove.sh >/dev/null 2>&1
